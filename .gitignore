@@ -1,0 +1,11 @@
+# Go binaries
+*.exe
+*.out
+*.test
+*.mod
+*.sum
+
+# Editor folders
+.idea/
+.vscode/
+*.swp
