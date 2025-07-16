@@ -12,6 +12,7 @@ func main() {
     http.HandleFunc("/api/goodbye", handlers.GoodbyeHandler)
     http.HandleFunc("/api/status", handlers.StatusHandler)
     http.Handle("/", http.FileServer(http.Dir("./html")))
+   http.HandleFunc("/api/hello/", handlers.HelloPathHandler) 
  
     http.ListenAndServe(":8080", nil)
 }
