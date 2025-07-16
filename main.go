@@ -14,8 +14,8 @@ func main() {
     http.Handle("/", http.FileServer(http.Dir("./html")))
     http.HandleFunc("/api/hello/", handlers.HelloPathHandler) 
     http.HandleFunc("/api/joke", handlers.JokeHandler)
-    http.HandleFunc("/api/joke/", handlers.JokeByIDHandler) 
-
+    http.HandleFunc("/api/joke/", handlers.JokeByIDHandler)
+    http.HandleFunc("/api/jokes", handlers.AllJokesHandler)
  
     http.ListenAndServe(":8080", nil)
 }
