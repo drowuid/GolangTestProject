@@ -8,47 +8,28 @@ import (
 "strconv"
 "strings"
 "time"
-
+"example.com/hello-app/data"
 )
-
-type Joke struct {
-ID int `json:"id"`
-Setup string `json:"setup"`
-Punchline string `json:"punchline"`
-Category string `json:"category"`
-}
-
-
-
-var jokes = []Joke{
-
-        {ID: 1, Setup: "Why don't scientists trust atoms?", Punchline: "Because they make up everything!", Category: "science"},
-        {ID: 2, Setup: "How does a penguin build its house?", Punchline: "Igloos it together.", Category: "animals"},
-        {ID: 3, Setup: "Why did the computer go to therapy?", Punchline: "It had too many processing issues.", Category: "tech"},
-        {ID: 4, Setup: "What do you call fake spaghetti?", Punchline: "An impasta.", Category: "food"},
-        {ID: 5, Setup: "Why was the math book sad?", Punchline: "It had too many problems.", Category:"math"},
-}
-
 
 func JokeHandler(w http.ResponseWriter, r *http.Request) {
 w.Header().Set("Content-Type", "application/json")
 
 if r.Method == http.MethodPost {
-var newJoke Joke
+var newJoke data.Joke
 err := json.NewDecoder(r.Body).Decode(&newJoke)
 if err != nil {
 http.Error(w, "Invalid JSON", http.StatusBadRequest)
 return
 }
 
-newJoke.ID = len(jokes) + 1
-jokes = append(jokes, newJoke)
+newJoke.ID = len(data.Jokes) + 1
+data.Jokes = append(data.Jokes, newJoke)
 json.NewEncoder(w).Encode(newJoke)
 return
 }
 
 rand.Seed(time.Now().UnixNano())
-joke := jokes[rand.Intn(len(jokes))]
+joke := data.Jokes[rand.Intn(len(data.Jokes))]
 json.NewEncoder(w).Encode(joke)
 }
 
@@ -57,11 +38,11 @@ w.Header().Set("Content-Type", "application/json")
 
 category := r.URL.Query().Get("category")
 if category == "" {
-json.NewEncoder(w).Encode(jokes)
+json.NewEncoder(w).Encode(data.Jokes)
 return
 }
-var filtered []Joke
-for _, joke := range jokes {
+var filtered []data.Joke
+for _, joke := range data.Jokes {
 if strings.EqualFold(joke.Category, category) {
 filtered = append(filtered, joke)
 }
@@ -91,7 +72,7 @@ http.Error(w, "Invalid joke ID", http.StatusBadRequest)
 return
 }
 
-for _, joke := range jokes {
+for _, joke := range data.Jokes {
 if joke.ID == id {
 json.NewEncoder(w).Encode(joke)
 return
