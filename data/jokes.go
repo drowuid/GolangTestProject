@@ -6,6 +6,8 @@ type Joke struct {
 	Setup string `json:"setup"`
 	Punchline string `json:"punchline"`
 	Category string `json:"category"`
+	Likes int `json:"likes"`
+	Dislikes int `json:"dislikes"`
 }
 
 var Jokes = []Joke{

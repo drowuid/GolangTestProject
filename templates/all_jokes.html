@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>All Jokes</title>
+</head>
+<body>
+	<h1>All Submitted Jokes</h1>
+	<table border="1" cellpadding="8">
+		<tr>
+			<th>ID</th>
+			<th>Setup</th>
+			<th>Punchline</th>
+			<th>Category</th>
+			<th>Votes</th>
+		</tr>
+		{{range .}}
+		<tr>
+			<td>{{.ID}}</td>
+			<td>{{.Setup}}</td>
+			<td>{{.Punchline}}</td>
+			<td>{{.Category}}</td>
+			<td>
+				<form action="/api/joke/like" method="GET" style="display:inline;">
+				<input type="hidden" name="id" value="{{.ID}}">
+				<button type="submit">👍 {{.Likes}}</button>
+		</form>
+		<form action="/api/joke/dislike" method="GET" style="display:inline;">
+			<input type="hidden" name="id" value="{{.ID}}">
+			<button type="submit">👎 {{.Dislikes}}</button>
+		</form>
+		</td>
+	</tr>
+		{{end}}
+	</table>
+</body>
+</html>

@@ -18,7 +18,10 @@ func main() {
     http.HandleFunc("/api/jokes", handlers.AllJokesHandler)
     http.HandleFunc("/joke", handlers.JokeHTMLHandler)
     http.HandleFunc("/submit", handlers.SubmitFormHandler)
-    http.HandleFunc("/joke/last", handlers.LastJokeHandler) 
+    http.HandleFunc("/joke/last", handlers.LastJokeHandler)
+    http.HandleFunc("/api/joke/like", handlers.LikeJokeHandler)
+    http.HandleFunc("/api/joke/dislike", handlers.DislikeJokeHandler)
+    http.HandleFunc("/jokes", handlers.AllJokesPageHandler) 
     http.ListenAndServe(":8080", nil)
 }
 

@@ -56,3 +56,10 @@ joke := data.Jokes[len(data.Jokes)-1]
     tmpl := template.Must(template.ParseFiles("templates/joke.html"))
     tmpl.Execute(w, pageData)
 }
+
+func AllJokesPageHandler(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(template.ParseFiles("templates/all_jokes.html"))
+	tmpl.Execute(w, data.Jokes)
+}
+
+

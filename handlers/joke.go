@@ -81,3 +81,41 @@ return
 
 http.Error(w, "Joke not found", http.StatusNotFound)
 }
+
+func LikeJokeHandler(w http.ResponseWriter, r *http.Request) {
+	idStr := r.URL.Query().Get("id")
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		http.Error(w, "Invalid joke ID", http.StatusBadRequest)
+		return
+}
+
+	for i := range data.Jokes {
+		if data.Jokes[i].ID == id {
+			data.Jokes[i].Likes++
+			json.NewEncoder(w).Encode(data.Jokes[i])
+			return
+		}
+	}
+	http.Error(w, "Joke not found", http.StatusNotFound)
+}
+
+func DislikeJokeHandler(w http.ResponseWriter, r *http.Request) {
+	idStr := r.URL.Query().Get("id")
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		http.Error(w, "Invalid joke ID", http.StatusBadRequest)
+		return
+}
+
+	for i := range data.Jokes {
+		if data.Jokes[i].ID == id {
+		data.Jokes[i].Dislikes++
+		json.NewEncoder(w).Encode(data.Jokes[i])
+		return
+		}
+	}
+	http.Error(w, "Joke not found", http.StatusNotFound)
+}
+
+
