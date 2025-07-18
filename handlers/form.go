@@ -26,6 +26,6 @@ return
 	}
 	
 	data.Jokes = append(data.Jokes, newJoke)
-	http.Redirect(w, r, "/joke?name=You", http.StatusSeeOther)
+	http.Redirect(w, r, "/joke/last?name=You", http.StatusSeeOther)
 	}
 }

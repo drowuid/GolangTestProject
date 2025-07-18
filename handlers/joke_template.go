@@ -18,17 +18,41 @@ func JokeHTMLHandler(w http.ResponseWriter, r *http.Request) {
 	name := r.URL.Query().Get("name")
 	if name == "" {
 		name = "stranger"
-}
+        }
 
 rand.Seed(time.Now().UnixNano())
 joke := data.Jokes[rand.Intn(len(data.Jokes))]
 
-data := JokePageData{
-	Name: name,
-	Setup: joke.Setup,
-	Punchline: joke.Punchline,
+pageData := JokePageData{
+        Name: name,
+        Setup: joke.Setup,
+        Punchline: joke.Punchline,
 }
 
 tmpl := template.Must(template.ParseFiles("templates/joke.html"))
-	tmpl.Execute(w, data)
+        tmpl.Execute(w, pageData)
+}
+
+
+func LastJokeHandler(w http.ResponseWriter, r *http.Request) {
+    name := r.URL.Query().Get("name")
+    if name == "" {
+        name = "stranger"
+    }
+
+if len (data.Jokes) == 0 {
+	http.Error(w, "No jokes available", http.StatusNotFound)
+	return
+}
+
+joke := data.Jokes[len(data.Jokes)-1]
+
+    pageData := JokePageData{
+        Name:      name,
+        Setup:     joke.Setup,
+        Punchline: joke.Punchline,
+    }
+
+    tmpl := template.Must(template.ParseFiles("templates/joke.html"))
+    tmpl.Execute(w, pageData)
 }
