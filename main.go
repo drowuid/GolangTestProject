@@ -1,12 +1,19 @@
 package main
 
 import (
-    "net/http"
-"example.com/hello-app/handlers"
+	"log"
+	"net/http"
+	"example.com/hello-app/handlers"
+	"example.com/hello-app/data"
 )
 
 // main is the entry point that registers both endpoints
 func main() {
+	err := data.InitDB()
+	if err != nil {
+	log.Fatal("Failed to connect to database:", err)
+}
+
     http.HandleFunc("/api/hello", handlers.HelloHandler)
     http.HandleFunc("/api/send", handlers.SendHandler)
     http.HandleFunc("/api/goodbye", handlers.GoodbyeHandler)
