@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head><title>Edit Joke</title></head>
+<body>
+	<h1>Edit Joke</h1>
+	<form method="POST" action="/jokes/edit">
+		<input type="hidden" name="id" value="{{.ID}}">
+		<p>
+    Setup:<br>
+    <input type="text" name="setup" value="{{.Setup}}">
+</p>
+<p>
+    Punchline:<br>
+    <input type="text" name="punchline" value="{{.Punchline}}">
+</p>
+<p>
+    Category:<br>
+    <input type="text" name="category" value="{{.Category}}">
+</p>
+
+		<button type="submit">💾 Save</button>
+	</form>
+</body>
+</html>

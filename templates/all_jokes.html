@@ -2,6 +2,15 @@
 <html>
 <head>
 	<title>All Jokes</title>
+
+	<style>
+    body { font-family: sans-serif; padding: 20px; }
+    table { border-collapse: collapse; margin-top: 15px; }
+    th, td { border: 1px solid #ccc; padding: 8px; }
+    th { background-color: #f5f5f5; }
+    button { margin-right: 4px; }
+</style>
+
 </head>
 <body>
 	<h1>All Submitted Jokes</h1>
@@ -22,21 +31,29 @@
 		</tr>
 		{{range .}}
 		<tr>
-			<td>{{.ID}}</td>
-			<td>{{.Setup}}</td>
-			<td>{{.Punchline}}</td>
-			<td>{{.Category}}</td>
-			<td>
-				<form action="/api/joke/like" method="GET" style="display:inline;">
-				<input type="hidden" name="id" value="{{.ID}}">
-				<button type="submit">👍 {{.Likes}}</button>
-		</form>
-		<form action="/api/joke/dislike" method="GET" style="display:inline;">
-			<input type="hidden" name="id" value="{{.ID}}">
-			<button type="submit">👎 {{.Dislikes}}</button>
-		</form>
-		</td>
-	</tr>
+    <td>{{.ID}}</td>
+    <td>{{.Setup}}</td>
+    <td>{{.Punchline}}</td>
+    <td>{{.Category}}</td>
+    <td>
+        <form action="/api/joke/like" method="GET" style="display:inline;">
+            <input type="hidden" name="id" value="{{.ID}}">
+            <button type="submit">👍 {{.Likes}}</button>
+        </form>
+        <form action="/api/joke/dislike" method="GET" style="display:inline;">
+            <input type="hidden" name="id" value="{{.ID}}">
+            <button type="submit">👎 {{.Dislikes}}</button>
+        </form>
+    </td>
+    <td>
+        <a href="/jokes/edit?id={{.ID}}">✏️ Edit</a> |
+        <form action="/jokes/delete" method="POST" style="display:inline;">
+            <input type="hidden" name="id" value="{{.ID}}">
+            <button type="submit" onclick="return confirm('Delete this joke?');">🗑️ Delete</button>
+        </form>
+    </td>
+</tr>
+
 		{{end}}
 	</table>
 </body>

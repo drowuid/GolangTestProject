@@ -54,3 +54,8 @@ func UpdateJoke(id int, setup, punchline, category string) error {
 	_, err := DB.Exec("UPDATE jokes SET setup = ?, punchline = ?, category = ?  WHERE id = ?", setup, punchline, category, id)
 	return err
 }
+
+func DeleteJoke(id int) error {
+	_, err := DB.Exec("Delete from jokes WHERE id = ?", id)
+	return err
+}
