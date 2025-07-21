@@ -6,6 +6,7 @@ import (
 	"time"
 	"math/rand"
 	"example.com/hello-app/data"
+	"strings"
 )
 
 type JokePageData struct {
@@ -58,8 +59,20 @@ joke := data.Jokes[len(data.Jokes)-1]
 }
 
 func AllJokesPageHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles("templates/all_jokes.html"))
-	tmpl.Execute(w, data.Jokes)
-}
+	category := r.URL.Query().Get("category")
+	keyword := r.URL.Query().Get("search")
 
+var filtered []data.Joke
+for _, joke := range data.Jokes {
+	if category != "" && !strings.EqualFold(joke.Category, category) {
+		continue
+	}
+	if keyword != "" && !strings.Contains(strings.ToLower(joke.Setup+joke.Punchline), strings.ToLower(keyword)) {
+		continue
+	}
+	filtered = append(filtered, joke)
+	}
+tmpl := template.Must(template.ParseFiles("templates/all_jokes.html"))
+tmpl.Execute(w, filtered)
+}
 
