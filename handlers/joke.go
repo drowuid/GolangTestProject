@@ -21,11 +21,16 @@ func JokeHandler(w http.ResponseWriter, r *http.Request) {
             return
         }
 
-        err = data.InsertJoke(newJoke.Setup, newJoke.Punchline, newJoke.Category)
-        if err != nil {
-            http.Error(w, "Failed to insert joke", http.StatusInternalServerError)
-            return
-        }
+        cookie, err := r.Cookie("user_id")
+if err != nil {
+    http.Error(w, "Unauthorized", http.StatusUnauthorized)
+    return
+}
+
+userID, _ := strconv.Atoi(cookie.Value)
+
+err = data.InsertJoke(userID, newJoke.Setup, newJoke.Punchline, newJoke.Category)
+
 
         // Get updated jokes and return the last one
         jokes, _ := data.GetAllJokes()
