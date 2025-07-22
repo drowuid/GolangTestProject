@@ -8,6 +8,7 @@ import (
     "strings"
     "time"
     "example.com/hello-app/data"
+    "html/template"
 )
 
 func JokeHandler(w http.ResponseWriter, r *http.Request) {
@@ -151,3 +152,33 @@ func DislikeJokeHandler(w http.ResponseWriter, r *http.Request) {
 
     json.NewEncoder(w).Encode(joke)
 }
+
+func RenderJokesPage(w http.ResponseWriter, r *http.Request) {
+    cookie, err := r.Cookie("user_id")
+    userID := 0
+    if err == nil {
+        userID, _ = strconv.Atoi(cookie.Value)
+    }
+
+    jokes, err := data.GetAllJokes()
+    if err != nil {
+        http.Error(w, "Failed to load jokes", http.StatusInternalServerError)
+        return
+    }
+
+    tmpl := template.Must(template.ParseFiles("templates/all_jokes.html"))
+    viewData := struct {
+        CurrentUserID int
+        Jokes         []data.Joke
+    }{
+        CurrentUserID: userID,
+        Jokes:         jokes,
+    }
+
+    err = tmpl.Execute(w, viewData)
+    if err != nil {
+        http.Error(w, "Failed to render jokes page", http.StatusInternalServerError)
+        return
+    }
+}
+

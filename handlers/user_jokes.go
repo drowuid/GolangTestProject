@@ -15,13 +15,22 @@ func MyJokesHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	userID, _ := strconv.Atoi(cookie.Value)
+	username := data.GetUsernameByID(userID)
 	jokes, err := data.GetJokesByUserID(userID)
 	if err != nil {
 		http.Error(w, "Failed to load your jokes", http.StatusInternalServerError)
 		return
 	}
 	tmpl := template.Must(template.ParseFiles("templates/my_jokes.html"))
-	tmpl.Execute(w, jokes)
+
+	viewData := struct {
+		Username string
+		Jokes []data.Joke
+}{
+		Username: username,
+		Jokes: jokes,
+}
+		tmpl.Execute(w, viewData)
 }
 
 

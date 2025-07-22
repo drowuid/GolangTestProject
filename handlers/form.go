@@ -8,21 +8,25 @@ import (
 )
 
 func SubmitFormHandler(w http.ResponseWriter, r *http.Request) {
+	cookie, err := r.Cookie("user_id")
+	if err != nil {
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+	userID, _ := strconv.Atoi(cookie.Value)
+	username := data.GetUsernameByID(userID)
+
+
+
     if r.Method == http.MethodGet {
         tmpl := template.Must(template.ParseFiles("templates/submit.html"))
-        tmpl.Execute(w, nil)
+        tmpl.Execute(w, struct {
+		Username string
+	}{Username: username})
         return
     }
-
-    if r.Method == http.MethodPost {
-        cookie, err := r.Cookie("user_id")
-        if err != nil {
-            http.Error(w, "Unauthorized", http.StatusUnauthorized)
-            return
-        }
-
-        userID, _ := strconv.Atoi(cookie.Value)
-
+   
+	if r.Method == http.MethodPost {
         setup := r.FormValue("setup")
         punchline := r.FormValue("punchline")
         category := r.FormValue("category")
@@ -33,7 +37,7 @@ func SubmitFormHandler(w http.ResponseWriter, r *http.Request) {
             return
         }
 
-        http.Redirect(w, r, "/joke/last?name=You", http.StatusSeeOther)
+        http.Redirect(w, r, "/joke/last?name="+username, http.StatusSeeOther)
     }
 }
 

@@ -48,11 +48,26 @@ func HandleDeleteJoke(w http.ResponseWriter, r *http.Request) {
 }
 
 func EditJokeHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodGet {
-		ShowEditFormHandler(w, r)
-}	else if r.Method == http.MethodPost {
-	HandleEditSubmission(w, r)
-} else {
-	http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-	}
+	cookie, err := r.Cookie("user_id")
+	if err != nil {
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+	return
+}
+
+	userID, _ := strconv.Atoi(cookie.Value)
+	username := data.GetUsernameByID(userID)
+
+	idStr := r.URL.Query().Get("id")
+	id, _ := strconv.Atoi(idStr)
+
+	joke, err := data.GetJokeByID(id)
+	if err != nil || joke.UserID != userID {
+		http.Error(w, "Unauthorized or joke not found", http.StatusForbidden)
+		return
+}
+	tmpl := template.Must(template.ParseFiles("templates/edit.html"))
+	tmpl.Execute(w, struct {
+		Username string
+		Joke data.Joke
+	}{Username: username, Joke: joke})
 }
