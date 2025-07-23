@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html>
-<head><title>Edit Joke</title></head>
+<head>
+	<h2>Welcome, {{.Username}}! Edit your joke below:</h2>
+
+	<title>Edit Joke</title></head>
 <body>
 	<h1>Edit Joke</h1>
 	<form method="POST" action="/jokes/edit">
-		<input type="hidden" name="id" value="{{.ID}}">
+		<input type="hidden" name="id" value="{{.Joke.ID}}">
 		<p>
     Setup:<br>
-    <input type="text" name="setup" value="{{.Setup}}">
+    <input type="text" name="setup" value="{{.Joke.Setup}}">
 </p>
 <p>
     Punchline:<br>
-    <input type="text" name="punchline" value="{{.Punchline}}">
+    <input type="text" name="punchline" value="{{.Joke.Punchline}}">
 </p>
 <p>
     Category:<br>
-    <input type="text" name="category" value="{{.Category}}">
+    <input type="text" name="category" value="{{.Joke.Category}}">
 </p>
 
 		<button type="submit">💾 Save</button>

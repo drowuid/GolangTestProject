@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My Jokes</title>
+	<style>
+		body { font-family: sans:serif; padding: 20px; }
+		table { border-collapse: collapse; margin-top: 15px; width: 100%; }
+		th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+		th { background-color: #f5f5f5; }
+		button { margin-right: 4px; }
+		.header { margin-bottom: 20px; }
+		.actions { white-space: nowrap; }
+	</style>
+</head>
+<body>
+	<div class="header">
+	<h2>Welcome, {{.Username}}!<h2>
+	<a href="/logout">Logout</a> | <a href="/submit">Submit Joke</a> | <a href="/jokes">All Jokes</a>
+	</div>
+
+	<h1>Your Jokes</h1>
+	<table>
+		<tr>
+			<th>ID</th>
+			<th>Setup</th>
+			<th>Punchline</th>
+			<th>Category</th>
+			<th>Votes</th>
+			<th>Actions</th>
+		</tr>
+		{{range .Jokes}}
+		<tr>
+			<td>{{.ID}}</td>
+			<td>{{.Setup}}</td>
+			<td>{{.Punchline}}</td>
+			<td>{{.Category}}</td>
+			<td class="actions">
+				👍 {{.Likes}} / 👎 {{.Dislikes}}
+		</td>
+		<td class="actions">
+			<a href="/jokes/edit?id={{.ID}}">✏️ Edit</a> |
+			<form action="/jokes/delete" method="POST" style="display:inline;">
+				<input type="hidden" name="id" value="{{.ID}}">
+				<button type="submit" onclick="return confirm('Delete this joke?');">🗑️ Delete</button>
+			</form>
+		</td>
+		</tr>
+		{{end}}
+		</table>
+</body>
+</html>

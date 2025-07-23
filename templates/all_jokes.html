@@ -29,7 +29,7 @@
 			<th>Category</th>
 			<th>Votes</th>
 		</tr>
-		{{range .}}
+		{{range .Jokes}}
 		<tr>
     <td>{{.ID}}</td>
     <td>{{.Setup}}</td>
@@ -45,16 +45,19 @@
             <button type="submit">👎 {{.Dislikes}}</button>
         </form>
     </td>
-    <td>
-        <a href="/jokes/edit?id={{.ID}}">✏️ Edit</a> |
-        <form action="/jokes/delete" method="POST" style="display:inline;">
-            <input type="hidden" name="id" value="{{.ID}}">
-            <button type="submit" onclick="return confirm('Delete this joke?');">🗑️ Delete</button>
-        </form>
-    </td>
-</tr>
-
-		{{end}}
-	</table>
+    <td class="actions">
+                {{if eq .UserID $.CurrentUserID}}
+                    <a href="/jokes/edit?id={{.ID}}">✏️ Edit</a> |
+                    <form action="/jokes/delete" method="POST" style="display:inline;">
+                        <input type="hidden" name="id" value="{{.ID}}">
+                        <button type="submit" onclick="return confirm('Delete this joke?');">🗑️ Delete</button>
+                    </form>
+                {{else}}
+                    <span style="color:#999;">Not your joke</span>
+                {{end}}
+            </td>
+        </tr>
+        {{end}}
+    </table>
 </body>
 </html>
